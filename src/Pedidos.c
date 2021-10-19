@@ -70,8 +70,7 @@ int AgregarPedido(ePedido* list, int id, int len, int *idPedido)
             auxPedido.kilos = ingresarEntero("Ingrese la cantidad de kilos del pedido: ");
             auxPedido.estado = PENDIENTE;
             auxPedido.isEmpty = CARGADO;
-            auxPedido.idLocalidad = ingresarEntero("Ingresa la id segun la localidad:\n100.Avellaneda\n101.bernal\n102.Quilmes\n103.Lanus\n104.Sarandi: ");
-
+            auxPedido.idLocalidad = ingresarEntero("Ingresa la localidad.\n 100.Avellaneda.\n101.Bernal.\n102.Quilmes.\n103.Lanus.\n104.Sarandi ");
             list[indice] = auxPedido;
             MostrarPedido(list[indice]);
         }

@@ -23,7 +23,7 @@ typedef struct
 
 int BuscarLibreTipo(eTipo* lista, int len);
 int IniciarTipos(eTipo *lista, int len);
-int PedirTipos(ePedido* list, int len, int id, eTipo* lista);
+int PedirTipos(ePedido* list, int len, int id, eTipo* lista,int *pAcum, int *pClientes);
 int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT);
 
 

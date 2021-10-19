@@ -7,7 +7,6 @@
 
 #ifndef ARRAYCLIENTS_H_
 #define ARRAYCLIENTS_H_
-#include "Localidad.h"
 
 typedef struct
 {
@@ -29,8 +28,7 @@ int ModificarCliente(Clients* list, int len);
 int BajaCliente(Clients* list, int len, int id);
 int ContadorClientes(Clients* list, int *contadorClientes, int len);
 void MostrarClientes(Clients x);
-int ImprimirClientes(Clients* list, int len);
-void MostrarCliente(Clients x, eLocalidad* localidades, int tamLoc);
+
 
 
 #endif /* ARRAYCLIENTS_H_ */

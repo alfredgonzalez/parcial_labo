@@ -44,6 +44,9 @@ int main(void)
 	int idTipo;
 	int pedidosLocalidad;
 	int idLocalidad;
+	int acumTipo=0;
+	int contadorTipo=0;
+	float promedio;
 	eLocalidad localidades[TAM_LOC] =
 	    {
 	        { 100, "Avellaneda" },
@@ -85,7 +88,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirClientes(lista, TAM);
+				ImprimirClientes(lista, localidades, TAM_LOC, TAM);
 				if(!ModificarCliente(lista, TAM))
 				{
 					printf("No se pudo modificar el cliente\n");
@@ -105,7 +108,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirClientes(lista, TAM);
+				ImprimirClientes(lista, localidades, TAM_LOC, TAM);
 				idBaja = ingresarEntero("Ingresa el id a dar de baja\n");
 				if(BajaCliente(lista, TAM, idBaja)==-1)
 				{
@@ -128,7 +131,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirClientes(lista, TAM);
+				ImprimirClientes(lista, localidades, TAM_LOC, TAM);
 				if(BuscarLibrePedidos(listaPedido, PEDIDOS) == -1)
 				{
 					printf("Error\n");
@@ -158,7 +161,7 @@ int main(void)
 			{
 				ImprimirPedidos(listaPedido, PEDIDOS);
 				idTipo= ingresarEntero("Ingresa el id del pedido pendiente: ");
-				if(PedirTipos(listaPedido, PEDIDOS, idTipo, listaTipo)==0)
+				if(PedirTipos(listaPedido, PEDIDOS, idTipo, listaTipo, &acumTipo, &contadorTipo)==0)
 				{
 					printf("Error.. el id del pedido ingresado no es correcto\n");
 				}
@@ -209,11 +212,20 @@ int main(void)
 				mostrarLocalidades(localidades, TAM_LOC);
 				idLocalidad = ingresarEntero("Ingresa el numero seguro la localidad: ");
 				pedidosLocalidad = PedidosPorLocalidad(listaPedido, localidades, PEDIDOS, TAM, idLocalidad);
-				printf("La cantidad de pedidos de esa localidad son (%d)", pedidosLocalidad);
+				printf("La cantidad de pedidos de esa localidad son (%d)\n", pedidosLocalidad);
 			}
 
 			break;
 		case 10:
+			if(contadorPedidos==0)
+			{
+				printf("Error. no hay pedidos ingresados\n");
+			}
+			else
+			{
+				promedio=(float)acumTipo/contadorTipo;
+				printf("El promedio de PP es: % %.2f\n", promedio);
+			}
 			break;
 		case 11:
 			printf("Gracias por elegirnos");

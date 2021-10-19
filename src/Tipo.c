@@ -48,7 +48,7 @@ int BuscarLibreTipo(eTipo* lista, int len)
     }
     return indice;
 }
-int PedirTipos(ePedido* list, int len, int id, eTipo* lista)
+int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pClientes)
 {
 	int allOk=0;
 	int indice;
@@ -70,6 +70,8 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista)
 			auxTipo.LDPE = ingresarEntero("Ingresa la cantidad de LDPE: ");
 			auxTipo.PP = ingresarEntero("Ingresa la cantidad de PP: ");
 			acumulador = auxTipo.HDPE + auxTipo.LDPE + auxTipo.PP;
+			*pAcum = auxTipo.PP + *pAcum ;
+			(*pClientes)++;
 
 			while(validarRangoEntero(acumulador, 0, list[indice].kilos)==0)
 			{

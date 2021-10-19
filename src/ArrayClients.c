@@ -5,7 +5,6 @@
  *      Author: alfre
  */
 
-#include "Localidad.h"
 #include "ArrayClients.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -208,38 +207,5 @@ int ContadorClientes(Clients* list, int *contadorClientes, int len)
 	*contadorClientes = auxiliarCont;
 	return allOk;
 }
-void MostrarCliente(Clients x, eLocalidad* localidades, int tamLoc)
-{
-    char descLocalidad[20];
 
-    if ( cargarDescripcionLocalidad( localidades, tamLoc, x.localidad, descLocalidad) == 1)
-    {
-
-        printf("\n %-5d %-11s %-10s %-10d %-15s %-25s\n",x.id,x.empresa,x.direccion,x.direccionNum,x.cuit, descLocalidad);
-    }
-
-}
-
-int ImprimirClientes(Clients* list, int len)
-{
-	int allOk=-1;
-
-	if(list != NULL && len > 0)
-	{
-
-		printf("Lista de clientes:                                                     \n");
-		printf("---------------------------------------------------------------------\n");
-		printf(" Id    EMPRESA     DIRECCION             CUIT            Localidad \n");
-		printf("---------------------------------------------------------------------\n");
-		for(int i = 0; i < len; i++)
-		{
-			if(list[i].isEmpty == CARGADO)
-			{
-				MostrarCliente(list[i]);
-			}
-		}
-		allOk=0;
-	}
-	return allOk;
-}
 
