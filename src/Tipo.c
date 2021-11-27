@@ -60,7 +60,8 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 	{
 		indice = BuscarPedidoPorID(list, len, id);
 		indiceTipo = BuscarLibreTipo(lista, len);
-		if(indice==-1 || list[indice].estado == COMPLETADO)
+		//acumuladorPorVehiculo(ePedido* lista, eTransporte* listaTransporte, int tamTransporte, int len,int indice)
+		if(indice==-1 || list[indice].estado == 2)
 		{
 			printf("Error..\n");
 		}
@@ -70,8 +71,6 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 			auxTipo.LDPE = ingresarEntero("Ingresa la cantidad de LDPE: ");
 			auxTipo.PP = ingresarEntero("Ingresa la cantidad de PP: ");
 			acumulador = auxTipo.HDPE + auxTipo.LDPE + auxTipo.PP;
-			*pAcum = auxTipo.PP + *pAcum ;
-			(*pClientes)++;
 
 			while(validarRangoEntero(acumulador, 0, list[indice].kilos)==0)
 			{
@@ -82,6 +81,8 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 				acumulador = auxTipo.HDPE + auxTipo.LDPE + auxTipo.PP;
 			}
 
+			*pAcum = auxTipo.PP + *pAcum ;
+			(*pClientes)++;
 			auxTipo.idPedido = id;
 			lista[indiceTipo] = auxTipo;
 			list[indice].estado = COMPLETADO;
@@ -94,16 +95,31 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT)
 {
 	int allOk=-1;
-	printf("-------------------------------------------------\n");
-	printf("  CUIT         DIRECCION          HDPE  LDPE  PP\n");
-	printf("-------------------------------------------------\n");
+	int flagEstado=1;
+	for(int i=0; i<len;i++)
+	{
+		if(lista[i].estado == 2)
+		{
+			flagEstado = 0;
+		}
+	}
+	if(flagEstado == 0)
+	{
+		printf("-------------------------------------------------\n");
+		printf("  CUIT         DIRECCION          HDPE  LDPE  PP\n");
+		printf("-------------------------------------------------\n");
+	}
+	else
+	{
+		printf("No se encontro ningun pedido completado\n");
+	}
 	for(int i=0;i<len; i++)
 	{
 		for(int j=0;j<len;j++)
 		{
 			for(int k=0;k<len;k++)
 			{
-				if(lista[i].estado == COMPLETADO && list[i].isEmpty == CARGADO && lista[j].isEmpty == CARGADO &&
+				if(lista[j].estado == 2 && list[i].isEmpty == CARGADO && lista[j].isEmpty == CARGADO &&
 						listaT[k].idPedido == lista[j].idPedido)
 				{
 					printf("%-10s %-11s %-10d %-5d %-5d %-5d\n", list[i].cuit, list[i].direccion, list[i].direccionNum, listaT[k].HDPE, listaT[k].LDPE, listaT[k].PP);
@@ -112,4 +128,27 @@ int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* li
 		}
 	}
 	return allOk;
+}
+
+void calcularPromedio(ePedido* lista, int len, int *pAcum, int* pContador)
+{
+	float promedio;
+	int flagEstado =1;
+	promedio = (float)(*pAcum)/(*pContador);
+
+	for(int i=0; i<len;i++)
+	{
+		if(lista[i].estado == 2)
+		{
+			flagEstado = 0;
+		}
+	}
+	if(flagEstado == 1)
+	{
+		printf("Error.. no se encontraron pedidos completados");
+	}
+	else
+	{
+		printf("El promedio de PP es:  %.2f\n", promedio);
+	}
 }

@@ -11,6 +11,8 @@
 #include "Localidad.h"
 #include "Tipo.h"
 #include "Pedidos.h"
+#include "Transporte.h"
+#include "Estado.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,13 +21,12 @@
 #include "ArrayClients.h"
 #define TAM 100
 #define PEDIDOS 1000
+#define TAM_TRANSPORTE 3
 #define TAM_LOC 5
 #define VACIO 1
 #define CARGADO 0
-#define COMPLETADO 2
 #define INICIALIZADO -1
-#define NOASIGNADO 1
-#define PENDIENTE 0
+
 
 
 int main(void)
@@ -46,7 +47,6 @@ int main(void)
 	int idLocalidad;
 	int acumTipo=0;
 	int contadorTipo=0;
-	float promedio;
 	eLocalidad localidades[TAM_LOC] =
 	    {
 	        { 100, "Avellaneda" },
@@ -55,6 +55,19 @@ int main(void)
 	        { 103, "Lanus" },
 	        { 104, "Sarandi" }
 	    };
+	eEstado estadoPedido[3] =
+	{
+			{0, "Pendiente"},
+			{1, "No asignado"},
+			{2, "Completado"},
+	};
+	eTransporte listaVehiculo[3] =
+	{
+			{1, "Moto", 50},
+			{2, "Auto", 100},
+			{3, "Camion", 200}
+	};
+
 
 	if((IniciarClientes(lista,TAM) == -1) || (IniciarPedidos(listaPedido, PEDIDOS) == -1) || IniciarTipos(listaTipo, PEDIDOS) == -1)
 	{
@@ -74,7 +87,7 @@ int main(void)
 			else
 			{
 				BuscarLibre(lista, TAM);
-				AgregarCliente(lista, &idClient, TAM);
+				AgregarCliente(lista, localidades, &idClient, TAM);
 				printf("------------------------\n");
 				printf("Alta realizada con exito\n");
 				printf("------------------------\n");
@@ -89,7 +102,7 @@ int main(void)
 			else
 			{
 				ImprimirClientes(lista, localidades, TAM_LOC, TAM);
-				if(!ModificarCliente(lista, TAM))
+				if(!ModificarCliente(lista, TAM, localidades))
 				{
 					printf("No se pudo modificar el cliente\n");
 				}
@@ -145,7 +158,8 @@ int main(void)
 					}
 					else
 					{
-						AgregarPedido( listaPedido, idUsuario, PEDIDOS, &idPedido);
+
+						AgregarPedido( listaPedido, estadoPedido, lista, listaVehiculo, TAM_TRANSPORTE, 3, idUsuario, PEDIDOS, &idPedido);
 						printf("Pedido cargado con exito\n");
 						contadorPedidos++;
 					}
@@ -159,7 +173,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirPedidos(listaPedido, PEDIDOS);
+				ImprimirPedidos(listaPedido, estadoPedido, listaVehiculo, 3, TAM_TRANSPORTE, PEDIDOS);
 				idTipo= ingresarEntero("Ingresa el id del pedido pendiente: ");
 				if(PedirTipos(listaPedido, PEDIDOS, idTipo, listaTipo, &acumTipo, &contadorTipo)==0)
 				{
@@ -210,7 +224,7 @@ int main(void)
 			{
 
 				mostrarLocalidades(localidades, TAM_LOC);
-				idLocalidad = ingresarEntero("Ingresa el numero seguro la localidad: ");
+				idLocalidad = ingresarEntero("Ingresa el numero segun la localidad (100.Avellaneda.\n101.Bernal.\n102.Quilmes.\n103.Lanus.\n104.Sarandi)\n: ");
 				pedidosLocalidad = PedidosPorLocalidad(listaPedido, localidades, PEDIDOS, TAM, idLocalidad);
 				printf("La cantidad de pedidos de esa localidad son (%d)\n", pedidosLocalidad);
 			}
@@ -223,16 +237,67 @@ int main(void)
 			}
 			else
 			{
-				promedio=(float)acumTipo/contadorTipo;
-				printf("El promedio de PP es: % %.2f\n", promedio);
+				calcularPromedio(listaPedido, PEDIDOS, &acumTipo, &contadorTipo);
 			}
 			break;
 		case 11:
+			if(contadorPedidos ==0)
+			{
+				printf("Error.. no se encontraron pedidos");
+			}
+			else
+			{
+				if(!ClienteMasPendientes(listaPedido,lista,TAM,PEDIDOS))
+				{
+					printf("No fue posible encontrar los clientes con mas pedidos en pendiente \n");
+				}
+			}
+
+			break;
+		case 12:
+			if(contadorPedidos==0)
+			{
+				printf("Error.. no se encontraron pedidos");
+			}
+			else
+			{
+				if(!ClienteMasCompletados(listaPedido, lista, TAM, PEDIDOS))
+				{
+					printf("No fue posible encontrar los clientes con mas pedidos completados \n");
+				}
+			}
+			break;
+		case 13:
+			if((contadorPedidos)==0)
+			{
+				printf("Error.. no se encontraron pedidos\n");
+			}
+			else
+			{
+				if(!vehiculoMasKilosEnviados(listaPedido, PEDIDOS))
+						{
+							printf("No fue posible encontrar el vehiculo con mas kilos enviados \n");
+						}
+			}
+			break;
+		case 14:
+			if((contadorPedidos)==0)
+			{
+				printf("Error.. no se encontraron pedidos\n");
+			}
+			else
+			{
+				if(!primerClienteMoto(listaPedido, lista, listaVehiculo, TAM, PEDIDOS, TAM_TRANSPORTE))
+				{
+					printf("No fue posible encontrar el primer cliente con envio en moto\n");
+				}
+			}
+			break;
+		case 15:
 			printf("Gracias por elegirnos");
-			opcion=0;
+			opcion = 0;
 			break;
 		}
-
 
 	}while(opcion==1);
 }

@@ -6,6 +6,7 @@
  */
 
 #include "ArrayClients.h"
+#include "Localidad.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,6 +20,7 @@
 #define INICIALIZADO -1
 #define NOASIGNADO 1
 #define PENDIENTE 0
+#define TAM_LOC 5
 
 
 
@@ -52,11 +54,13 @@ int BuscarLibre(Clients *list, int len)
 }
 
 
-int AgregarCliente(Clients *list,int *pId,int len)
+int AgregarCliente(Clients *list, eLocalidad* localidades, int *pId,int len)
 {
     int todoOk = 0 ;
     int indice;
+
     Clients auxClients;
+    eLocalidad auxLocalidad;
     if(list != NULL && len > 0)
     {
         indice = BuscarLibre(list,len);
@@ -69,10 +73,31 @@ int AgregarCliente(Clients *list,int *pId,int len)
             auxClients.id = *pId;
             (*pId)++;
             ingresarString("Ingresa el nombre de la empresa: ", auxClients.empresa);
+            while(verificarSiContieneNumero(auxClients.empresa) == 1 || validarLargoString (auxClients.empresa,3, 20))
+            {
+            	ingresarString("Error(Ingresa solo caracteres),Minimo 3 letras Maximo 20. Ingresa el nombre de la empresa: ", auxClients.empresa);
+            }
             ingresarString("Ingresa la calle:  ", auxClients.direccion);
+            while(verificarSiContieneNumero(auxClients.direccion) == 1)
+            {
+                ingresarString("Error(Ingresa solo caracteres). Ingresa la direccion: ", auxClients.direccion);
+            }
             auxClients.direccionNum = ingresarEntero("Ingresa la altura de la calle: ");
-            ingresarString("Ingresa el cuit ", auxClients.cuit);
-            auxClients.localidad = ingresarEntero("Ingresa la localidad.\n 100.Avellaneda.\n101.Bernal.\n102.Quilmes.\n103.Lanus.\n104.Sarandi ");
+            ingresarString("Ingresa el cuit(sin guiones ni puntos): ", auxClients.cuit);
+
+            while(verificarSiContieneNumero(auxClients.cuit) == 0 || strlen(auxClients.cuit) != 11)
+            {
+            	ingresarString("Error(Ingresa solo numeros), el cuit debe tener 11 numeros en total(sin guiones ni puntos). Ingresa el cuit de la empresa: ", auxClients.cuit);
+            }
+            mostrarLocalidades(localidades, TAM_LOC);
+            auxLocalidad.id = ingresarEntero("Ingresa la localidad del cliente.");
+            while(auxLocalidad.id != 100 && auxLocalidad.id != 101 && auxLocalidad.id != 102 && auxLocalidad.id != 103 && auxLocalidad.id != 104)
+            {
+            	printf("Error.. la localidad ingresada no se encuentra en la base de datos");
+            	mostrarLocalidades(localidades, TAM_LOC);
+            	auxClients.idLocalidad = ingresarEntero("Ingresa la localidad del cliente. ");
+            }
+            auxClients.idLocalidad = auxLocalidad.id;
             auxClients.isEmpty = CARGADO;
             list[indice] = auxClients;
         }
@@ -96,7 +121,7 @@ int EncontrarClientePorID(Clients* list, int len,int id)
 
     return indice;
 }
-int ModificarCliente(Clients* list, int len)
+int ModificarCliente(Clients* list, int len, eLocalidad* localidades)
 {
     int allOk=0;
     int indice;
@@ -117,7 +142,7 @@ int ModificarCliente(Clients* list, int len)
 
             do
             {
-                printf("Direccion: %s %d. \nLocalidad: %d", list[indice].direccion, list[indice].direccionNum, list[indice].localidad);
+                printf("Direccion: %s %d. \nLocalidad: %d", list[indice].direccion, list[indice].direccionNum, list[indice].idLocalidad);
                 option = ingresarEntero("\nSeleccione la informacion a modificar\n 1.Direccion\n 2.Localidad\n");
                 while(option!=1&&option!=2)
                 {
@@ -130,7 +155,8 @@ int ModificarCliente(Clients* list, int len)
                 	list[indice].direccionNum = ingresarEntero("\nIngresa el numero de direccion correcto: ");
                 break;
                 case 2:
-                	list[indice].localidad = ingresarEntero("Ingresa la localidad.\n 100.Avellaneda.\n101.Bernal.\n102.Quilmes.\n103.Lanus.\n104.Sarandi ");
+                	mostrarLocalidades(localidades, TAM_LOC);
+                	list[indice].idLocalidad = ingresarEntero("Ingresa la localidad.\n ");
                 break;
                 default:
                     printf("Error.. la opcion ingresada no es correcta\n");
@@ -160,7 +186,7 @@ int BajaCliente(Clients* list, int len, int id)
     	indice = EncontrarClientePorID(list,len,id);
     	if(indice == -1)
     	{
-    		printf("Error \n");
+    		printf("Error el id no pertenece a ningun cliente\n");
     	}
     	else
     	{
@@ -205,6 +231,41 @@ int ContadorClientes(Clients* list, int *contadorClientes, int len)
 		allOk=0;
 	}
 	*contadorClientes = auxiliarCont;
+	return allOk;
+}
+
+void MostrarCliente(Clients x, eLocalidad* localidades, int tamLoc)
+{
+	char descLocalidad[20];
+
+		if ( cargarDescripcionLocalidad( localidades, tamLoc, x.idLocalidad, descLocalidad) == 1)
+		{
+
+			printf("\n %-5d %-11s %-10s %-10d %-15s %-25s\n",x.id,x.empresa,x.direccion,x.direccionNum,x.cuit, descLocalidad);
+		}
+
+}
+
+int ImprimirClientes(Clients* list,eLocalidad* localidades, int tamLoc, int len)
+{
+	int allOk=-1;
+
+	if(list != NULL && len > 0)
+	{
+
+		printf("Lista de clientes:                                                     \n");
+		printf("---------------------------------------------------------------------\n");
+		printf(" Id    EMPRESA     DIRECCION             CUIT            Localidad \n");
+		printf("---------------------------------------------------------------------\n");
+		for(int i = 0; i < len; i++)
+		{
+			if(list[i].isEmpty == CARGADO)
+			{
+				MostrarCliente(list[i], localidades, tamLoc);
+			}
+		}
+		allOk=0;
+	}
 	return allOk;
 }
 
