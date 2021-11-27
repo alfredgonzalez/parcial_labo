@@ -60,7 +60,6 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 	{
 		indice = BuscarPedidoPorID(list, len, id);
 		indiceTipo = BuscarLibreTipo(lista, len);
-		//acumuladorPorVehiculo(ePedido* lista, eTransporte* listaTransporte, int tamTransporte, int len,int indice)
 		if(indice==-1 || list[indice].estado == 2)
 		{
 			printf("Error..\n");
@@ -92,7 +91,7 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 	}
 	return allOk;
 }
-int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT)
+int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT,int tam)
 {
 	int allOk=-1;
 	int flagEstado=1;
@@ -115,9 +114,9 @@ int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* li
 	}
 	for(int i=0;i<len; i++)
 	{
-		for(int j=0;j<len;j++)
+		for(int j=0;j<tam;j++)
 		{
-			for(int k=0;k<len;k++)
+			for(int k=0;k<tam;k++)
 			{
 				if(lista[j].estado == 2 && list[i].isEmpty == CARGADO && lista[j].isEmpty == CARGADO &&
 						listaT[k].idPedido == lista[j].idPedido)

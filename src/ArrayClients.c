@@ -95,7 +95,7 @@ int AgregarCliente(Clients *list, eLocalidad* localidades, int *pId,int len)
             {
             	printf("Error.. la localidad ingresada no se encuentra en la base de datos");
             	mostrarLocalidades(localidades, TAM_LOC);
-            	auxClients.idLocalidad = ingresarEntero("Ingresa la localidad del cliente. ");
+            	auxLocalidad.id = ingresarEntero("Ingresa la localidad del cliente. ");
             }
             auxClients.idLocalidad = auxLocalidad.id;
             auxClients.isEmpty = CARGADO;

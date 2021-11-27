@@ -52,7 +52,7 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista,int *pAcum, int *pCl
 /// @param len
 /// @param listaT
 /// @return -1 si hubo error y 0 si pudo funcionar correctamente
-int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT);
+int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT,int tam);
 /// @fn void calcularPromedio(ePedido*, int, int*, int*)
 /// @brief calcula el promedio de PP que fue entregado en el transcurso del programa y lo printea
 /// @param lista

@@ -212,7 +212,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirPedidosCompletados(listaPedido, lista, TAM, listaTipo);
+				ImprimirPedidosCompletados(listaPedido, lista, TAM, listaTipo, PEDIDOS);
 			}
 			break;
 		case 9:
