@@ -295,12 +295,12 @@ int ImprimirPedidosPendientes(ePedido* lista, Clients* list, int len)
 
 int ClienteMasPendientes(ePedido* lista, Clients* list, int len, int tam)
 {
-	int contador[tam];
+	int contador[len];
 	int flag =1;
 	int mayorPendientes=0;
 	int flagEstado=1;
 	int allOk=0;
-	for(int i=0;i<tam;i++)
+	for(int i=0;i<len;i++)
 	{
 		contador[i]=0;
 	}
@@ -318,7 +318,7 @@ int ClienteMasPendientes(ePedido* lista, Clients* list, int len, int tam)
 				}
 			}
 		}
-		for(int i=0;i<tam;i++)
+		for(int i=0;i<len;i++)
 		{
 			if(contador[i] > mayorPendientes || flag == 1)
 			{
@@ -326,7 +326,7 @@ int ClienteMasPendientes(ePedido* lista, Clients* list, int len, int tam)
 				flag = 0;
 			}
 		}
-		for(int i=0;i<tam;i++)
+		for(int i=0;i<len;i++)
 		{
 			if(contador[i]==mayorPendientes && flagEstado == 0)
 			{
@@ -346,12 +346,12 @@ int ClienteMasPendientes(ePedido* lista, Clients* list, int len, int tam)
 }
 int ClienteMasCompletados(ePedido* lista, Clients* list, int len, int tam)
 {
-	int contador[tam];
+	int contador[len];
 	int flag =1;
 	int mayorCompletados;
 	int allOk=0;
 	int flagEstado=1;
-	for(int i=0;i<tam;i++)
+	for(int i=0;i<len;i++)
 	{
 		contador[i]=0;
 	}
@@ -369,7 +369,7 @@ int ClienteMasCompletados(ePedido* lista, Clients* list, int len, int tam)
 				}
 			}
 		}
-		for(int i=0;i<tam;i++)
+		for(int i=0;i<len;i++)
 		{
 			if(contador[i] > mayorCompletados || flag == 1)
 			{
@@ -377,7 +377,7 @@ int ClienteMasCompletados(ePedido* lista, Clients* list, int len, int tam)
 				flag = 0;
 			}
 		}
-		for(int i=0;i<tam;i++)
+		for(int i=0;i<len;i++)
 		{
 			if(contador[i]==mayorCompletados && flagEstado == 0)
 			{
@@ -455,25 +455,23 @@ int primerClienteMoto(ePedido* lista, Clients* list, eTransporte* listaTransport
 {
 	int allOk=0;
 	int flag =1;
-	int flagEstado = 1;
 	char primerClienteMoto[50];
 	char cuitPrimerMoto[20];
 
 	if(lista != NULL && list != NULL && listaTransporte != NULL && len > 0 && tam > 0 && tamTransporte > 0)
 	{
-		for(int i=0; i<tam;i++)
+		for(int i=0; i<len;i++)
 		{
-			for(int j=0; j<len;j++)
+			for(int j=0; j<tam;j++)
 			{
 				for(int k=0; k<tamTransporte;k++)
 				{
-					if(lista[i].idCliente == list[j].id && lista[i].isEmpty == CARGADO && lista[i].estado == 2
-							&& listaTransporte[k].idTransporte == 1 && lista[i].idTransporte == 1 && flag == 1)
+					if(lista[j].idCliente == list[i].id && lista[j].isEmpty == CARGADO && lista[j].estado == 2
+							&& listaTransporte[k].idTransporte == 1 && lista[j].idTransporte == 1 && flag == 1)
 					{
-						strcpy(primerClienteMoto, list[j].empresa);
-						strcpy(cuitPrimerMoto, list[j].cuit);
+						strcpy(primerClienteMoto, list[i].empresa);
+						strcpy(cuitPrimerMoto, list[i].cuit);
 						printf("El primer cliente con envio entregado en moto es: \nNOMBRE:%s\nCUIT:%s\n", primerClienteMoto, cuitPrimerMoto);
-						flagEstado = 0;
 						flag = 0;
 						break;
 					}
@@ -482,7 +480,7 @@ int primerClienteMoto(ePedido* lista, Clients* list, eTransporte* listaTransport
 			}
 		}
 		allOk = 1;
-		if(flagEstado == 1)
+		if(flag == 1)
 		{
 			printf("Error.. no hay pedidos entregados\n");
 		}

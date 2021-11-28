@@ -75,26 +75,26 @@ int AgregarCliente(Clients *list, eLocalidad* localidades, int *pId,int len)
             ingresarString("Ingresa el nombre de la empresa: ", auxClients.empresa);
             while(verificarSiContieneNumero(auxClients.empresa) == 1 || validarLargoString (auxClients.empresa,3, 20))
             {
-            	ingresarString("Error(Ingresa solo caracteres),Minimo 3 letras Maximo 20. Ingresa el nombre de la empresa: ", auxClients.empresa);
+            	ingresarString("Error(Ingresa solo caracteres),Minimo 3 letras Maximo 20.\n Ingresa el nombre de la empresa: ", auxClients.empresa);
             }
             ingresarString("Ingresa la calle:  ", auxClients.direccion);
             while(verificarSiContieneNumero(auxClients.direccion) == 1)
             {
-                ingresarString("Error(Ingresa solo caracteres). Ingresa la direccion: ", auxClients.direccion);
+                ingresarString("Error(Ingresa solo caracteres).\n Ingresa la direccion: ", auxClients.direccion);
             }
             auxClients.direccionNum = ingresarEntero("Ingresa la altura de la calle: ");
             ingresarString("Ingresa el cuit(sin guiones ni puntos): ", auxClients.cuit);
 
             while(verificarSiContieneNumero(auxClients.cuit) == 0 || strlen(auxClients.cuit) != 11)
             {
-            	ingresarString("Error(Ingresa solo numeros), el cuit debe tener 11 numeros en total(sin guiones ni puntos). Ingresa el cuit de la empresa: ", auxClients.cuit);
+            	ingresarString("Error(Ingresa solo numeros), el cuit debe tener 11 numeros en total(sin guiones ni puntos).\n Ingresa el cuit de la empresa: ", auxClients.cuit);
             }
             mostrarLocalidades(localidades, TAM_LOC);
-            auxLocalidad.id = ingresarEntero("Ingresa la localidad del cliente.");
+            auxLocalidad.id = ingresarEntero("Ingresa la localidad del cliente: ");
             while(auxLocalidad.id != 100 && auxLocalidad.id != 101 && auxLocalidad.id != 102 && auxLocalidad.id != 103 && auxLocalidad.id != 104)
             {
-            	printf("Error.. la localidad ingresada no se encuentra en la base de datos");
             	mostrarLocalidades(localidades, TAM_LOC);
+            	printf("Error.. la localidad ingresada no se encuentra en la base de datos\n");
             	auxLocalidad.id = ingresarEntero("Ingresa la localidad del cliente. ");
             }
             auxClients.idLocalidad = auxLocalidad.id;
