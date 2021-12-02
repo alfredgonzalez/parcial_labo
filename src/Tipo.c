@@ -118,10 +118,10 @@ int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* li
 		{
 			for(int k=0;k<tam;k++)
 			{
-				if(lista[j].estado == 2 && list[i].isEmpty == CARGADO && lista[j].isEmpty == CARGADO &&
-						listaT[k].idPedido == lista[j].idPedido)
+				if(lista[j].estado == 2 && list[i].isEmpty == CARGADO && listaT[k].idPedido == lista[j].idPedido)
 				{
 					printf("%-10s %-11s %-10d %-5d %-5d %-5d\n", list[i].cuit, list[i].direccion, list[i].direccionNum, listaT[k].HDPE, listaT[k].LDPE, listaT[k].PP);
+					break;
 				}
 			}
 		}

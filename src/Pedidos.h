@@ -97,7 +97,7 @@ int PedidosPorLocalidad(ePedido* lista, eLocalidad* list, int tam, int len, int 
 /// @param list
 /// @param len
 /// @return -1 si hubo error y 0 si pudo funcionar correctamente
-int ImprimirClientePendiente(ePedido* lista, Clients* list, int len);
+int ImprimirClientePendiente(ePedido* lista, Clients* list, int len, int tam);
 /// @fn void MostrarPedidoPendiente(Clients*, ePedido*)
 /// @brief compara los id del pedido junto con lo del cliente y muestra los datos del cliente al hacer match
 /// @param list
@@ -109,7 +109,7 @@ void MostrarPedidoPendiente(Clients* list, ePedido* lista);
 /// @param list
 /// @param len
 /// @return -1 si da error y 0 si funciono correctamente
-int ImprimirPedidosPendientes(ePedido* lista, Clients* list, int len);
+int ImprimirPedidosPendientes(ePedido* lista, Clients* list, int len, int tam);
 /// @fn int ClienteMasPendientes(ePedido*, Clients*, int, int)
 /// @brief recorre ambos arrays, compara el pedido con el id del cliente, valida que el pedido esta en pendiente y si todo matchea corrrectamente agrega 1 al contador en el indice i. con el contador compara el cliente para verificar que sea/sean el/los cliente con mas pedidos pendientes
 /// @param lista

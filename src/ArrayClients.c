@@ -121,13 +121,14 @@ int EncontrarClientePorID(Clients* list, int len,int id)
 
     return indice;
 }
-int ModificarCliente(Clients* list, int len, eLocalidad* localidades)
+int ModificarCliente(Clients* list, int len, eLocalidad* localidades,int tamLoc)
 {
     int allOk=0;
     int indice;
     int id;
     int option;
     int optionSeguir = 0;
+    char descripcion[50];
 
     if(list != NULL && len >0)
     {
@@ -142,7 +143,8 @@ int ModificarCliente(Clients* list, int len, eLocalidad* localidades)
 
             do
             {
-                printf("Direccion: %s %d. \nLocalidad: %d", list[indice].direccion, list[indice].direccionNum, list[indice].idLocalidad);
+            	cargarDescripcionLocalidad( localidades, tamLoc, list[indice].idLocalidad, descripcion);
+                printf("Direccion: %s %d. \nLocalidad: %s", list[indice].direccion, list[indice].direccionNum, descripcion);
                 option = ingresarEntero("\nSeleccione la informacion a modificar\n 1.Direccion\n 2.Localidad\n");
                 while(option!=1&&option!=2)
                 {

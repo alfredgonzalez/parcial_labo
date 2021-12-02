@@ -102,7 +102,7 @@ int main(void)
 			else
 			{
 				ImprimirClientes(lista, localidades, TAM_LOC, TAM);
-				if(!ModificarCliente(lista, TAM, localidades))
+				if(!ModificarCliente(lista, TAM, localidades, TAM_LOC))
 				{
 					printf("No se pudo modificar el cliente\n");
 				}
@@ -192,7 +192,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirClientePendiente(listaPedido, lista, TAM);
+				ImprimirClientePendiente(listaPedido, lista, PEDIDOS, TAM);
 			}
 			break;
 		case 7:
@@ -202,7 +202,7 @@ int main(void)
 			}
 			else
 			{
-				ImprimirPedidosPendientes(listaPedido, lista, TAM);
+				ImprimirPedidosPendientes(listaPedido, lista, PEDIDOS, TAM);
 			}
 			break;
 		case 8:

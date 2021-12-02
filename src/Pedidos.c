@@ -79,25 +79,30 @@ int AgregarPedido(ePedido* list, eEstado* estados, Clients* lista, eTransporte* 
         	auxPedido.idCliente = id;
         	auxPedido.idPedido = *idPedido;
         	(*idPedido)++;
-            auxPedido.kilos = ingresarEntero("Ingrese la cantidad de kilos del pedido: ");
+            auxPedido.kilos = ingresarEntero("Ingrese la cantidad de kilos del pedido(maximo 200): ");
+            while(auxPedido.kilos > 200)
+            {
+            	printf("Error.. no podemos tomar pedidos mayor a 200 kilos\n");
+            	auxPedido.kilos = ingresarEntero("Ingrese la cantidad de kilos del pedido nuevamente(maximo 200): ");
+            }
             auxPedido.estado = 0;
             auxPedido.isEmpty = CARGADO;
             auxPedido.idLocalidad = lista[indiceCliente].idLocalidad;
             mostrarTransportes(listaTransporte, tamTransporte);
             auxTransporte.idTransporte = ingresarEntero("Ingrese el id del transporte deseado: ");
-            while(auxPedido.kilos > 50 && auxTransporte.idTransporte == 1)
+            while((auxPedido.kilos > 50 && auxTransporte.idTransporte == 1) || (auxTransporte.idTransporte != 1 && auxTransporte.idTransporte !=2 && auxTransporte.idTransporte !=3))
             {
-            	printf("Error, el transporte elegido no puede soportar esa cantidad de kilos\n");
+            	printf("Error, el transporte elegido no puede soportar esa cantidad de kilos o el id ingresado es invalido\n");
             	auxTransporte.idTransporte = ingresarEntero("Ingrese el id del transporte deseado nuevamente: ");
             }
             while(auxPedido.kilos > 100 && auxTransporte.idTransporte == 2)
             {
-            	printf("Error, el transporte elegido no puede soportar esa cantidad de kilos\n");
+            	printf("Error, el transporte elegido no puede soportar esa cantidad de kilos o el id ingresado es invalido\n");
             	auxTransporte.idTransporte = ingresarEntero("Ingrese el id del transporte deseado nuevamente: ");
             }
             while(auxPedido.kilos > 200 && auxTransporte.idTransporte == 3)
             {
-                printf("Error, el transporte elegido no puede soportar esa cantidad de kilos\n");
+                printf("Error, el transporte elegido no puede soportar esa cantidad de kilos o el id ingresado es invalido\n");
                 auxTransporte.idTransporte = ingresarEntero("Ingrese el id del transporte deseado nuevamente: ");
             }
         	}
@@ -250,7 +255,7 @@ int PedidosPorLocalidad(ePedido* lista, eLocalidad* list, int tam,int len, int i
 }
 
 
-int ImprimirClientePendiente(ePedido* lista, Clients* list, int len)
+int ImprimirClientePendiente(ePedido* lista, Clients* list, int len, int tam)
 {
 	int allOk=-1;
 
@@ -258,7 +263,7 @@ int ImprimirClientePendiente(ePedido* lista, Clients* list, int len)
 	printf("---------------------------------------------------------------------\n");
 	printf(" Id    EMPRESA     DIRECCION          KILOS          \n");
 	printf("---------------------------------------------------------------------\n");
-	for(int i=0;i<len; i++)
+	for(int i=0;i<tam; i++)
 	{
 		for(int j=0;j<len;j++)
 		{
@@ -272,7 +277,7 @@ int ImprimirClientePendiente(ePedido* lista, Clients* list, int len)
 
 	return allOk;
 }
-int ImprimirPedidosPendientes(ePedido* lista, Clients* list, int len)
+int ImprimirPedidosPendientes(ePedido* lista, Clients* list, int len, int tam)
 {
 	int allOk=-1;
 
@@ -280,7 +285,7 @@ int ImprimirPedidosPendientes(ePedido* lista, Clients* list, int len)
 	printf("---------------------------------------------------------------------\n");
 	printf(" CUIT          DIRECCION             KILOS          \n");
 	printf("---------------------------------------------------------------------\n");
-	for(int i=0;i<len; i++)
+	for(int i=0;i<tam; i++)
 	{
 		for(int j=0;j<len;j++)
 		{
@@ -389,7 +394,7 @@ int ClienteMasCompletados(ePedido* lista, Clients* list, int len, int tam)
 		}
 		if(flagEstado == 1)
 		{
-			printf("No se encontraron pedidos completados\n");
+			printf("No se encontraron pedidos completados \n");
 		}
 		allOk=1;
 	}
@@ -467,22 +472,21 @@ int primerClienteMoto(ePedido* lista, Clients* list, eTransporte* listaTransport
 				for(int k=0; k<tamTransporte;k++)
 				{
 					if(lista[j].idCliente == list[i].id && lista[j].isEmpty == CARGADO && lista[j].estado == 2
-							&& listaTransporte[k].idTransporte == 1 && lista[j].idTransporte == 1 && flag == 1)
+							&& listaTransporte[k].idTransporte == 1 && lista[j].idTransporte == 1 && flag == 1 )
 					{
-						strcpy(primerClienteMoto, list[i].empresa);
-						strcpy(cuitPrimerMoto, list[i].cuit);
-						printf("El primer cliente con envio entregado en moto es: \nNOMBRE:%s\nCUIT:%s\n", primerClienteMoto, cuitPrimerMoto);
-						flag = 0;
-						break;
+							flag = 0;
+							strcpy(primerClienteMoto, list[i].empresa);
+							strcpy(cuitPrimerMoto, list[i].cuit);
+							printf("El primer cliente con envio entregado en moto es: \nNOMBRE:%s\nCUIT:%s\n", primerClienteMoto, cuitPrimerMoto);
+							break;
 					}
-
 				}
 			}
 		}
 		allOk = 1;
 		if(flag == 1)
 		{
-			printf("Error.. no hay pedidos entregados\n");
+			printf("Error.. no hay pedidos entregados en moto\n");
 		}
 	}
 	return allOk;

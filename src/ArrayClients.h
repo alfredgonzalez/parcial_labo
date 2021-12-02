@@ -52,7 +52,7 @@ int EncontrarClientePorID(Clients* list, int len,int id);
 /// @param list
 /// @param len
 /// @return retorna 0 si tuvo algun error y 1 si pudo acceder correctamente.
-int ModificarCliente(Clients* list, int len, eLocalidad* localidades);
+int ModificarCliente(Clients* list, int len, eLocalidad* localidades, int tamLoc);
 /// @fn int BajaCliente(Clients*, int, int)
 /// @brief recibe un id como parametro, llama a la funcion EncontrarClientePorID y lo guarda en un indice, al acceder al indice da opcion al usuario
 /// de eliminarlo o cancelar la baja. Si la baja se realiza, deja la direccion de ese cliente en 0
