@@ -91,6 +91,8 @@ int PedirTipos(ePedido* list, int len, int id, eTipo* lista, int *pAcum, int *pC
 	}
 	return allOk;
 }
+
+
 int ImprimirPedidosCompletados(ePedido* lista, Clients* list, int len, eTipo* listaT,int tam)
 {
 	int allOk=-1;
